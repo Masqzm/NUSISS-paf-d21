@@ -23,4 +23,16 @@ public class CustomerService {
     public Customer getCustomerByID(int id) {
         return customerRepo.getCustomerByID(id);
     }
+
+    public boolean deleteCustomerByID(int id) {
+        return customerRepo.deleteCustomerByID(id);
+    }
+
+    public boolean updateCustomerByID(Customer customer) {
+        return customerRepo.updateCustomerByID(customer);
+    }
+    
+    public boolean insertCustomer(Customer customer) {
+        return customerRepo.insertCustomer(customer);
+    }
 }

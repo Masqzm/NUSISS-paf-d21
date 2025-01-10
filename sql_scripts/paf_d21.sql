@@ -76,12 +76,3 @@ insert into tv_shows (title, lang, rating, user_rating, release_date) values ('H
 select  * from tv_shows;
 
 select * from tv_shows where user_rating >= 8 or rating in ('M18', 'NC13'); 
-
-
-create table room (
-	id int not null auto_increment,
-	type varchar(100) not null,
-	author varchar(80) not null,
-	submission_date date,
-	constraint pk_tutorial_id primary key (id)
-);

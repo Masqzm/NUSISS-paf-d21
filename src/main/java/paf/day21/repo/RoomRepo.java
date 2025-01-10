@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -28,5 +29,27 @@ public class RoomRepo {
         }
 
         return rooms;
+    }
+
+    public Room getRoomByID(int id) {
+        return template.queryForObject(SQLQueries.SQL_GET_ROOM, BeanPropertyRowMapper.newInstance(Room.class), id);
+    }
+
+    public boolean deleteRoomByID(int id) {
+        int roomDeleted = template.update(SQLQueries.SQL_DEL_ROOM, id);
+
+        return roomDeleted > 0; 
+    }
+    
+    public boolean updateRoomByID(Room room) {
+        int roomUpdated = template.update(SQLQueries.SQL_UPDATE_ROOM, room.getRoomType(), room.getPrice(), room.getId());
+
+        return roomUpdated > 0; 
+    }    
+
+    public boolean insertRoom(Room room) {
+        int roomInserted = template.update(SQLQueries.SQL_INSERT_ROOM, room.getRoomType(), room.getPrice());
+
+        return roomInserted > 0; 
     }
 }

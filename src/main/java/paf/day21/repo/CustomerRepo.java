@@ -22,7 +22,7 @@ public class CustomerRepo {
         
         // customers = template.query(
         //                 SQLQueries.SQL_GET_ALLCUSTOMERS,
-        //                 (result, int) -> {
+        //                 (result, rowNum) -> {
         //                     Customer cust = new Customer(); 
         //                     cust.setId(result.getInt("id"));
         //                     cust.setFullname(result.getString("fullname"));
@@ -53,5 +53,23 @@ public class CustomerRepo {
 
     public Customer getCustomerByID(int id) {
         return template.queryForObject(SQLQueries.SQL_GET_CUSTOMER, BeanPropertyRowMapper.newInstance(Customer.class), id);
+    }
+
+    public boolean deleteCustomerByID(int id) {
+        int customerDeleted = template.update(SQLQueries.SQL_DEL_CUSTOMER, id);
+
+        return customerDeleted > 0; 
+    }
+    
+    public boolean updateCustomerByID(Customer customer) {
+        int customerUpdated = template.update(SQLQueries.SQL_UPDATE_CUSTOMER, customer.getFullname(), customer.getEmail(), customer.getId());
+
+        return customerUpdated > 0; 
+    }    
+
+    public boolean insertCustomer(Customer customer) {
+        int customerInserted = template.update(SQLQueries.SQL_INSERT_CUSTOMER, customer.getFullname(), customer.getEmail());
+
+        return customerInserted > 0; 
     }
 }
