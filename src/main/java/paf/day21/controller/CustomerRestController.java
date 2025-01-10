@@ -45,7 +45,11 @@ public class CustomerRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCustomerByID(@PathVariable int id) {
-        boolean success = customerSvc.deleteCustomerByID(id);
+        boolean success = false;
+
+        // Retrieve to check customer exists
+        if(customerSvc.getCustomerByID(id) != null)
+            success = customerSvc.deleteCustomerByID(id);
 
         return ResponseEntity.ok().body(success);
     }

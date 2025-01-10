@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import paf.day21.SQLQueries;
 import paf.day21.model.Customer;
+import paf.day21.model.exception.ResourceNotFoundException;
 
 @Repository
 public class CustomerRepo {
@@ -33,6 +35,9 @@ public class CustomerRepo {
         // Auto-mapping mtd (ensure model attribute have same name as DB)
         customers = template.query(SQLQueries.SQL_GET_ALLCUSTOMERS, BeanPropertyRowMapper.newInstance(Customer.class));
 
+        if(customers.isEmpty()) 
+            throw new ResourceNotFoundException("No records in Customer table");
+
         return customers;
     }
     
@@ -47,12 +52,21 @@ public class CustomerRepo {
                                 sqlRowSet.getString("email"));
             customers.add(cust);
         }
+        
+        if(customers.isEmpty()) 
+            throw new ResourceNotFoundException("No records in Customer table");
 
         return customers;
     }
 
     public Customer getCustomerByID(int id) {
-        return template.queryForObject(SQLQueries.SQL_GET_CUSTOMER, BeanPropertyRowMapper.newInstance(Customer.class), id);
+        try {
+            Customer cust = template.queryForObject(SQLQueries.SQL_GET_CUSTOMER, BeanPropertyRowMapper.newInstance(Customer.class), id);
+
+            return cust;
+        } catch (DataAccessException ex) {
+            throw new ResourceNotFoundException("Customer with ID " + id + " not found");
+        }
     }
 
     public boolean deleteCustomerByID(int id) {
