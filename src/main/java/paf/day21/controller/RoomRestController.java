@@ -30,24 +30,24 @@ public class RoomRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getCustomerByID(@PathVariable int id) {
+    public ResponseEntity<Room> getRoomByID(@PathVariable int id) {
         Room room = roomSvc.getRoomByID(id);
 
         return ResponseEntity.ok().body(room);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCustomerByID(@PathVariable int id) {
+    public ResponseEntity<Boolean> deleteRoomByID(@PathVariable int id) {
         boolean success = roomSvc.deleteRoomByID(id);
 
         return ResponseEntity.ok().body(success);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> updateCustomerByID(@PathVariable int id, @RequestBody Room room) {
+    public ResponseEntity<Boolean> updateRoomByID(@PathVariable int id, @RequestBody Room room) {
         boolean success = false;
 
-        // Retrieve to check customer exists
+        // Retrieve to check room exists
         if(roomSvc.getRoomByID(id) != null)
             success = roomSvc.updateRoomByID(room);
 
@@ -55,7 +55,7 @@ public class RoomRestController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Boolean> insertCustomer(@RequestBody Room room) {
+    public ResponseEntity<Boolean> createRoom(@RequestBody Room room) {
         boolean success = roomSvc.insertRoom(room);
 
         return ResponseEntity.ok().body(success);

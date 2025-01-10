@@ -62,7 +62,7 @@ public class CustomerRestController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Boolean> insertCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Boolean> createCustomer(@RequestBody Customer customer) {
         boolean success = customerSvc.insertCustomer(customer);
 
         return ResponseEntity.ok().body(success);
