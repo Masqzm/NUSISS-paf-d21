@@ -32,6 +32,7 @@ insert into room (room_type, price) values ('deluxe', 200);
 insert into room (room_type, price) values ('super deluxe', 250);
 insert into room (room_type, price) values ('president', 300);
 insert into room (room_type, price) values ('suite', 350);
+insert into room (room_type, price) values ('test', 100);
 
 insert into customer (fullname, email) values ('Fred', 'fred@gmail.com');
 insert into customer (fullname, email) values ('Bob', 'bob@gmail.com');
@@ -41,3 +42,5 @@ insert into customer (fullname, email) values ('Test', 'test@gmail.com');
 
 select * from room;
 select * from customer;
+
+delete from customer;

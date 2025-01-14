@@ -20,4 +20,24 @@ public class SQLQueries {
     public static final String SQL_DEL_CUSTOMER = "DELETE FROM customer WHERE id = ?";
     public static final String SQL_UPDATE_CUSTOMER = "UPDATE customer set fullname = ?, email = ? WHERE id = ?";
     public static final String SQL_INSERT_CUSTOMER = "INSERT into customer (fullname, email) values (?, ?)";
+
+
+
+    public static final String SQL_INSERT_EMPLOYEE = "insert into employee (first_name, last_name, email, job_title, department, employment_date, salary, active) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    public static final String SQL_DEL_EMPLOYEE = "update employee set active = false where id = ?";
+
+    public static final String SQL_UPDATE_EMPLOYEE = """
+        update employee set 
+        first_name = ?,
+        email = ?,
+        job_title = ?,
+        department = ?,
+        employment_date = ?, 
+        salary = ?
+        where id = ?
+    """;
+
+    public static final String SQL_GET_EMPLOYEE = "select * from employee where id = ?";
+    public static final String SQL_GET_ALLEMPLOYEES = "select * from employee";
 }

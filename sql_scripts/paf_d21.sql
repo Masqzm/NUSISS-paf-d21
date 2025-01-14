@@ -72,7 +72,117 @@ insert into tv_shows (title, lang, rating, user_rating, release_date) values ('A
 insert into tv_shows (title, lang, rating, user_rating, release_date) values ('James Bond', 'English', 'M18', 8.5, '2025-02-25');
 insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Squid Game 2', 'Korean', 'M18', 8, '2025-01-01');
 insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Hunger Games', 'English', 'NC13', 7.6, '2025-01-05');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Brooklyn 99', 'English', 'PG', 8.2, '2022-05-22');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Hunger Games 2', 'English', 'NC13', 7.8, '2025-01-07');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Hunger Games 3', 'English', 'NC13', 7.6, '2025-01-08');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Squid Game', 'Korean', 'M18', 8, '2023-06-10');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Test', 'English', 'PG', 7, '2024-08-11');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Test', 'English', 'PG', 7, '2024-08-11');
+insert into tv_shows (title, lang, rating, user_rating, release_date) values ('Test2', 'English', 'R21', 8.2, '2024-12-11');
 
 select  * from tv_shows;
 
 select * from tv_shows where user_rating >= 8 or rating in ('M18', 'NC13'); 
+
+
+# PAF Day 22
+select distinct lang from tv_shows;				# distinct - selects unique lang values
+
+select distinct lang, rating from tv_shows;
+
+
+select count(*) from tv_shows where lang like 'English';
+
+select count(distinct title) from tv_shows where lang in ('English', 'Korean');
+
+select avg(user_rating) from tv_shows where lang like 'English';
+
+select sum(user_rating) from tv_shows where lang like 'Korean';
+
+select sum(user_rating) / count(*) from tv_shows where lang like 'Korean';
+
+
+select rating, count(rating) from tv_shows group by rating;
+
+select rating, count(rating) as CNT from tv_shows 				# CNT - column name
+group by rating 
+order by count(rating) desc;
+
+select rating, count(rating) from tv_shows
+where lang in (select distinct lang from tv_shows)				# query in a query
+group by rating
+order by count(rating) asc;
+
+# Usage of "having" for conditions in aggregate fn.s (filtering)
+select rating, count(rating) from tv_shows
+group by rating
+having count(rating) > 2;					
+
+# Nested query (similar to above)
+select  * from
+(select rating, count(rating) as cnt from tv_shows
+group by rating
+order by rating asc) as tableA
+where tableA.cnt > 2;
+
+
+select title, rating, lang,
+max(rating) over (partition by lang) as max_rating
+from tv_shows;
+
+
+
+# OVER PARTITION BY example
+create table car (
+	id int not null auto_increment,
+    make varchar(50),
+    model varchar(50),
+    cartype varchar(50),
+    price float default '10000.0',
+    constraint pk_car_id primary key (id)
+);
+
+insert into car (make, model, cartype, price) values ('Hyundai', 'Avante', 'sedan', 80000.0);
+insert into car (make, model, cartype, price) values ('Toyota', 'Altis', 'sedan', 82850.0);
+insert into car (make, model, cartype, price) values ('Ford', 'Falcom', 'low cost', 50000.0);
+insert into car (make, model, cartype, price) values ('Renault', 'Megane', 'standard', 90000.0);
+insert into car (make, model, cartype, price) values ('Hyundai', 'Box', 'premium', 120000.0);
+insert into car (make, model, cartype, price) values ('Honda', 'Civic', 'sports', 180000.0);
+insert into car (make, model, cartype, price) values ('Toyota', 'Two', 'sports', 155000.0);
+insert into car (make, model, cartype, price) values ('Honda', 'Fit', 'sports', 152850.0);
+insert into car (make, model, cartype, price) values ('Ford', 'Galaxy', 'standard', 79000.0);
+insert into car (make, model, cartype, price) values ('Toyota', 'Penguin', 'sedan', 69000.0);
+insert into car (make, model, cartype, price) values ('Renault', 'Fuego', 'sports', 65000.0);
+
+select * from car;
+
+select make, model, cartype, price, 
+max(price) over (partition by cartype) as max_cartype
+from car;
+
+select make, model, cartype, price, 
+sum(price) over (partition by cartype) as sum_cartype
+from car;
+
+select make, model, cartype, price, 
+sum(price) over (partition by make) as sum_make
+from car;
+
+select make, model, cartype, price, 
+avg(price) over (partition by cartype) as avg_cartype
+from car;
+
+select make, model, cartype, price, 
+avg(price) over () as overall_avg_price, 
+avg(price) over (partition by cartype) as avg_cartype
+from car;
+
+
+create table test (
+	id int not null auto_increment,
+	cnt int,
+	cost float,
+	primary key (id)
+);
+
+select * from test;
