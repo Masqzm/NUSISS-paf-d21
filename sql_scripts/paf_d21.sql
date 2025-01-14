@@ -178,11 +178,60 @@ avg(price) over (partition by cartype) as avg_cartype
 from car;
 
 
-create table test (
+# Practice
+create table employee (
 	id int not null auto_increment,
-	cnt int,
-	cost float,
-	primary key (id)
+	first_name varchar(50) not null,
+	last_name varchar(50) not null,
+	email varchar(255),
+	job_title varchar(100),
+	department varchar(100),
+	employment_date date,
+	salary float,
+	constraint pk_employee_id primary key (id)
 );
 
-select * from test;
+select * from employee;
+
+# Adding variable TO existing TABLE 
+alter table employee
+add isActive boolean;
+
+# Set the next auto_increment to 1 (note only one col can have auto_increment in a table)
+alter table employee
+auto_increment = 1;
+
+
+create table dependant(
+	id int not null auto_increment,
+	first_name varchar(50) not null,
+	last_name varchar(50) not null,
+	birth_date date,
+	relationship varchar(30),
+	employee_id int,
+	constraint pk_dependant_id primary key (id),
+	constraint fk_dep_emp_id foreign key (employee_id) references employee(id)
+);
+
+# For GetMapping
+select * from employee;
+select * from employee where id = 1;
+
+# For DeleteMapping
+update employee set isActive = false where id = 1;
+# Not recommended
+delete from employee where id = 1;
+
+# For PostMapping
+insert into employee (first_name, last_name, email, job_title, department, employment_date, salary, isActive) values
+('Darryl', 'Ng', 'darrylng@nus.edu.sg', 'Lecturer', 'ISS', '2021-09-08', 7000.0, true);
+
+# For UpdateMapping
+update employee set
+first_name = 'Alibaba',
+email = 'alibaba@alibaba.com.sg',
+job_title = 'CEO',
+department = 'master of no one',
+employment_date = '2025-01-01',
+salary = '2000000.0'
+where id = 1;
